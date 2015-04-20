@@ -355,6 +355,15 @@ PIPELINE_CSS = {
         ),
         'output_filename': 'css/firefox_developer_firstrun-bundle.css',
     },
+    'firefox_developer_firstrun_spring_campaign': {
+        'source_filenames': (
+            'css/sandstone/sandstone-resp.less',
+            'css/firefox/template-resp.less',
+            'css/base/mozilla-modal.less',
+            'css/firefox/dev-firstrun-spring-campaign.less',
+        ),
+        'output_filename': 'css/firefox_developer_firstrun_spring_campaign-bundle.css',
+    },
     'nightly_firstrun': {
         'source_filenames': (
             'css/sandstone/sandstone-resp.less',
@@ -1164,6 +1173,21 @@ PIPELINE_JS = {
             'js/firefox/dev-firstrun.js',
         ),
         'output_filename': 'js/firefox_developer_firstrun-bundle.js',
+    },
+    'firefox_developer_firstrun_spring_campaign': {
+        'source_filenames': (
+            'js/firefox/australis/australis-uitour.js',
+            'js/base/mozilla-modal.js',
+            'js/firefox/dev-firstrun-spring-campaign.js',
+        ),
+        'output_filename': 'js/firefox_developer_firstrun_spring_campaign-bundle.js',
+    },
+    'firefox_developer_whatsnew': {
+        'source_filenames': (
+            'js/base/mozilla-modal.js',
+            'js/firefox/dev-whatsnew.js',
+        ),
+        'output_filename': 'js/firefox_developer_whatsnew-bundle.js',
     },
     'firefox_new': {
         'source_filenames': (
