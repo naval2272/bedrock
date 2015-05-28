@@ -3,6 +3,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // YouTube API hook has to be in global scope
+
+// Videos are not yet ready for the whatsnew features (Performance Tools
+// and What We Fixed). These videos are *probably* coming shortly after
+// 6/2, so leaving this file here for easy implementation.
+
 function onYouTubeIframeAPIReady() {
     'use strict';
 
@@ -16,36 +21,6 @@ function onYouTubeIframeAPIReady() {
     tag.src = 'https://www.youtube.com/iframe_api';
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    var trackClick = function (gaArgs, href, event) {
-        if (event.metaKey || event.ctrlKey) {
-            // Open link in new tab
-            gaTrack(gaArgs);
-        } else {
-            event.preventDefault();
-            gaTrack(gaArgs, function() { window.location = href; });
-        }
-    };
-
-    // Setup GA tracking for misc links
-    $('.feature .more').on('click', function(e) {
-        trackClick([
-            '_trackEvent',
-            'Developer /firstrun/ Interactions',
-            'learn more link clicks',
-            $(this).text()
-        ], $(this).attr('href'), e);
-    });
-
-    // Setup GA tracking for theme reset link
-    $('.notice .more').on('click', function(e) {
-        trackClick([
-            '_trackEvent',
-            'Developer /firstrun/ Interactions',
-            'learn more link clicks',
-            'Want the old look back?'
-        ], $(this).attr('href'), e);
-    });
 
     function onYouTubeIframeAPIReady() {
 
@@ -72,12 +47,21 @@ function onYouTubeIframeAPIReady() {
 
             function onPlayerReady(event) {
                 event.target.playVideo();
-                gaTrack(['_trackEvent', 'Developer /whatsnew/ Interactions', 'play', videoTitle + ' video']);
+
+                window.dataLayer.push({
+                    'event': 'video-interaction',
+                    'interaction': 'play',
+                    'videoTitle': videoTitle
+                });
             }
 
             function onPlayerStateChange(event) {
                 if (event.data === YT.PlayerState.ENDED) {
-                    gaTrack(['_trackEvent', 'Developer /whatsnew/ Interactions', 'finish', videoTitle + ' video']);
+                    window.dataLayer.push({
+                        'event': 'video-interaction',
+                        'interaction': 'finish',
+                        'videoTitle': videoTitle
+                    });
                 }
             }
 
