@@ -22,6 +22,7 @@ from bedrock.base.urlresolvers import reverse
 from lib import l10n_utils
 from lib.l10n_utils.dotlang import _
 from product_details.version_compare import Version
+import waffle
 
 from bedrock.base.geo import get_country_from_request
 from bedrock.firefox.firefox_details import firefox_desktop
@@ -344,7 +345,7 @@ def firefox_partners(request):
         request, 'firefox/partners/index.html', 'firefox.partners.index', template_vars, form_kwargs)
 
 
-def show_devbrowser_firstrun(version):
+def show_devbrowser_firstrun_or_whatsnew(version):
     match = re.match(r'\d{1,2}', version)
     if match:
         num_version = int(match.group(0))
@@ -476,8 +477,11 @@ class FirstrunView(LatestFxView):
             template = 'firefox/australis/growth-firstrun-test1.html'
         elif variant == '36' and version == '35.0.1':
             template = 'firefox/australis/growth-firstrun-test2.html'
-        elif show_devbrowser_firstrun(version):
-            template = 'firefox/dev-firstrun.html'
+        elif show_devbrowser_firstrun_or_whatsnew(version):
+            if (waffle.switch_is_active('dev-edition-spring-campaign')):
+                template = 'firefox/dev-firstrun-spring-campaign.html'
+            else:
+                template = 'firefox/dev-firstrun.html'
         elif show_38_0_5_firstrun(version):
             template = 'firefox/australis/fx38_0_5/firstrun.html'
         elif show_36_firstrun(version):
@@ -509,7 +513,9 @@ class WhatsnewView(LatestFxView):
         if oldversion.startswith('rv:'):
             oldversion = oldversion[3:]
 
-        if version.startswith('37.'):
+        if show_devbrowser_firstrun_or_whatsnew(version):
+            template = 'firefox/dev-whatsnew.html'
+        elif version.startswith('37.'):
             template = 'firefox/whatsnew-fx37.html'
         elif version.startswith('36.'):
             if show_36_whatsnew_tour(oldversion):
@@ -538,7 +544,7 @@ class TourView(LatestFxView):
         version = self.kwargs.get('version') or ''
         locale = l10n_utils.get_locale(self.request)
 
-        if show_devbrowser_firstrun(version):
+        if show_devbrowser_firstrun_or_whatsnew(version):
             template = 'firefox/dev-firstrun.html'
         elif show_36_firstrun(version):
             template = 'firefox/australis/fx36/help-menu-36-tour.html'

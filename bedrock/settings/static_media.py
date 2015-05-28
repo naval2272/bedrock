@@ -1184,6 +1184,14 @@ PIPELINE_JS = {
         ),
         'output_filename': 'js/firefox_developer_firstrun-bundle.js',
     },
+    # will be needed when videos are ready (shortly after 6/2?)
+    # 'firefox_developer_whatsnew': {
+    #    'source_filenames': (
+    #        'js/base/mozilla-modal.js',
+    #        'js/firefox/dev-whatsnew.js',
+    #    ),
+    #    'output_filename': 'js/firefox_developer_whatsnew-bundle.js',
+    # },
     'firefox_new': {
         'source_filenames': (
             'js/libs/jquery-1.11.0.min.js',
